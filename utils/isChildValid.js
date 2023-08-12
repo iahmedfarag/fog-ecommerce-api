@@ -1,0 +1,3 @@
+const ischildValid = (parent, child) = {
+
+}
