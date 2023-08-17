@@ -14,13 +14,13 @@ const reqMethods = ['body', 'query', 'params', 'headers', 'file', 'files']
 // }
 export const validationCoreFunction = (schema) => {
     return (req, res, next) => {
-        // req
+
         let validationErrorArr = []
         for (const key of reqMethods) {
             if (schema[key]) {
                 const validationResult = schema[key].validate(req[key], { abortEarly: false, })
-                // console.log(validationResult.error, "here")
                 if (validationResult.error) {
+                    console.log(validationResult.error)
                     validationErrorArr = [...validationResult.error.details]
                 }
             }
@@ -28,15 +28,12 @@ export const validationCoreFunction = (schema) => {
 
         if (validationErrorArr.length) {
             let errorsArr = validationErrorArr.map((err) => {
-                const errObj = {
-                    field: err.context.key,
-                    message: err.message
-                }
+                const errObj = { field: err.context.key, message: err.message }
                 return errObj
             })
-            console.log(errorsArr)
             return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Validation Error', errors: errorsArr })
         }
+
         next()
     }
 }

@@ -4,13 +4,14 @@ import { allowedExtensions } from './allowedExtentions.js';
 
 export const multerCloudFunction = (allowedExtensionsArr) => {
     if (!allowedExtensionsArr) {
-        allowedExtensionsArr = allowedExtensions.Image
+        allowedExtensionsArr = allowedExtensions.image
     }
     //================================== Storage =============================
     const storage = multer.diskStorage({})
 
     //================================== File Filter =============================
     const fileFilter = function (req, file, cb) {
+        console.log(file)
         if (allowedExtensionsArr.includes(file.mimetype)) {
             return cb(null, true)
         }

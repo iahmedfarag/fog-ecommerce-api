@@ -3,13 +3,13 @@ import mongoose from "mongoose";
 const subCategorySchema = new mongoose.Schema({
     name: {
         type: String,
-        unique: true,
         lowercase: true,
         required: true,
+        trim: true,
+        min: [3, "name too short"],
     },
     slug: {
         type: String,
-        unique: true,
         lowercase: true,
         required: true,
     },
@@ -23,20 +23,20 @@ const subCategorySchema = new mongoose.Schema({
             required: true,
         },
     },
-    createdBy: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'user',
-        required: false // TODO: after making user model "true"
+    customId: {
+        type: String,
+        required: true
     },
-    categoryId: {
+    mainCategory: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "mainCategory",
+        required: true,
+    },
+    category: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "category",
         required: true,
     },
-    customId: {
-        type: String,
-        required: true
-    }
 }, { timestamps: true })
 
 const subCategoryModel = mongoose.model("subCategory", subCategorySchema);

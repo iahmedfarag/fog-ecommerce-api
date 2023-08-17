@@ -1,0 +1,87 @@
+[
+    {
+        "name": "Laptops",
+        "mainCategory":"64ddd580257516b670b5a3e0"
+    },
+    {
+        "name": "tablets",
+        "mainCategory":"64ddd580257516b670b5a3e0"
+    },
+    {
+        "name": "pcs",
+        "mainCategory":"64ddd580257516b670b5a3e0"
+    },
+    {
+        "name": "monitors",
+        "mainCategory":"64ddd580257516b670b5a3e1"
+    },
+    {
+        "name": "printers & scanners",
+        "mainCategory":"64ddd580257516b670b5a3e1"
+    },
+    {
+        "name": "input devices",
+        "mainCategory":"64ddd580257516b670b5a3e1"
+    },
+    {
+        "name": "pc components",
+        "mainCategory":"64ddd580257516b670b5a3e2"
+    },
+    {
+        "name": "cooling",
+        "mainCategory":"64ddd580257516b670b5a3e2"
+    },
+    {
+        "name": "hardware & other",
+        "mainCategory":"64ddd580257516b670b5a3e2"
+    },
+    {
+        "name": "mobile phones",
+        "mainCategory":"64ddd580257516b670b5a3e3"
+    },
+    {
+        "name": "wearables",
+        "mainCategory":"64ddd580257516b670b5a3e3"
+    },
+    {
+        "name": "accessories",
+        "mainCategory":"64ddd580257516b670b5a3e3"
+    },
+    {
+        "name": "consoles",
+        "mainCategory":"64ddd580257516b670b5a3e4"
+    },
+    {
+        "name": "pc gaming",
+        "mainCategory":"64ddd580257516b670b5a3e4"
+    },
+    {
+        "name": "tvs",
+        "mainCategory":"64ddd580257516b670b5a3e5"
+    },
+    {
+        "name": "hi-fi",
+        "mainCategory":"64ddd580257516b670b5a3e5"
+    },
+    {
+        "name": "cameras & drones",
+        "mainCategory":"64ddd580257516b670b5a3e6"
+    },
+    {
+        "name": "photo accessories",
+        "mainCategory":"64ddd580257516b670b5a3e6"
+    },
+    {
+        "name": "kitchen",
+        "mainCategory":"64ddd580257516b670b5a3e7"
+    },
+    {
+        "name": "bathroom",
+        "mainCategory":"64ddd580257516b670b5a3e7"
+    },
+    {
+        "name": "other",
+        "mainCategory":"64ddd580257516b670b5a3e7"
+    }
+]
+

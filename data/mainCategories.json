@@ -1,0 +1,35 @@
+[
+    {
+        "name": "Laptops, Tablets & Pcs",
+        "icon": "/assets/mainCategories/Laptops-Tablets-PC.svg"
+    },
+    {
+        "name": "Computer & Office",
+        "icon": "/assets/mainCategories/Computer-Office.svg"
+    },
+    {
+        "name": "Hardware & Components",
+        "icon": "/assets/mainCategories/Hardware-Components.svg"
+    },
+    {
+        "name": "Smartphones",
+        "icon": "/assets/mainCategories/Smartphones.svg"
+    },
+    {
+        "name": "Games & Entertainment",
+        "icon": "/assets/mainCategories/Games-Entertainment.svg"
+    },
+    {
+        "name": "TV & Wi-Fi",
+        "icon": "/assets/mainCategories/TV-HIFI.svg"
+    },
+    {
+        "name": "Photo & Video",
+        "icon": "/assets/mainCategories/Photo-Video.svg"
+    },
+    {
+        "name": "Home Appliance",
+        "icon": "/assets/mainCategories/Home-Appliance.svg"
+    }
+]
+

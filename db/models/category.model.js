@@ -6,6 +6,8 @@ const categorySchema = new mongoose.Schema({
         unique: true,
         lowercase: true,
         required: true,
+        trim: true,
+        min: [3, "name too short"],
     },
     slug: {
         type: String,
@@ -13,24 +15,14 @@ const categorySchema = new mongoose.Schema({
         lowercase: true,
         required: true,
     },
-    image: {
-        secure_url: {
-            type: String,
-            required: true,
-        },
-        public_id: {
-            type: String,
-            required: true,
-        },
-    },
-    createdBy: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'user',
-        required: false // TODO: after making user model "true"
-    },
     customId: {
         type: String,
         required: true
+    },
+    mainCategory: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "mainCategory",
+        required: true,
     }
 }, { timestamps: true })
 

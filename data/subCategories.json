@@ -1,0 +1,464 @@
+[
+    {
+        "name": "apple macbook",
+        "image": "/assets/subcategories/laptops/Laptops-1.jpg",
+        "category": "64ddd6008032c9ba8cbaa5ec",
+        "mainCategory": "64ddd580257516b670b5a3e0"
+    },
+    {
+        "name": "business laptop",
+        "image": "/assets/subcategories/laptops/Business-Laptop.jpg",
+        "category": "64ddd6008032c9ba8cbaa5ec",
+        "mainCategory": "64ddd580257516b670b5a3e0"
+    },
+    {
+        "name": "gaming laptop",
+        "image": "/assets/subcategories/laptops/Gaming-Laptop.jpg",
+        "category": "64ddd6008032c9ba8cbaa5ec",
+        "mainCategory": "64ddd580257516b670b5a3e0"
+    },
+    {
+        "name": "ultrabook",
+        "image": "/assets/subcategories/laptops/Ultrabook.jpg",
+        "category": "64ddd6008032c9ba8cbaa5ec",
+        "mainCategory": "64ddd580257516b670b5a3e0"
+    },
+    {
+        "name": "apple ipad",
+        "image": "/assets/subcategories/tablets/Apple-Ipad.jpg",
+        "category": "64ddd6008032c9ba8cbaa5ed",
+        "mainCategory": "64ddd580257516b670b5a3e0"
+    },
+    {
+        "name": "android tablets",
+        "image": "/assets/subcategories/tablets/Android-tablets.jpg",
+        "category": "64ddd6008032c9ba8cbaa5ed",
+        "mainCategory": "64ddd580257516b670b5a3e0"
+    },
+    {
+        "name": "windows tablets",
+        "image": "/assets/subcategories/tablets/Windows-Tablets.jpg",
+        "category": "64ddd6008032c9ba8cbaa5ed",
+        "mainCategory": "64ddd580257516b670b5a3e0"
+    },
+    {
+        "name": "gaming pcs",
+        "image": "/assets/subcategories/pcs/Gaming-PCs.jpg",
+        "category": "64ddd6008032c9ba8cbaa5ee",
+        "mainCategory": "64ddd580257516b670b5a3e0"
+    },
+    {
+        "name": "office pcs",
+        "image": "/assets/subcategories/pcs/Office-PCs.jpg",
+        "category": "64ddd6008032c9ba8cbaa5ee",
+        "mainCategory": "64ddd580257516b670b5a3e0"
+    },
+    {
+        "name": "all in one",
+        "image": "/assets/subcategories/pcs/All-in-one.jpg",
+        "category": "64ddd6008032c9ba8cbaa5ee",
+        "mainCategory": "64ddd580257516b670b5a3e0"
+    },
+    {
+        "name": "2K monitors",
+        "image": "/assets/subcategories/monitors/2k.jpg",
+        "category": "64ddd6008032c9ba8cbaa5ef",
+        "mainCategory": "64ddd580257516b670b5a3e1"
+    },
+    {
+        "name": "4K monitors",
+        "image": "/assets/subcategories/monitors/monitors-4k.jpg",
+        "category": "64ddd6008032c9ba8cbaa5ef",
+        "mainCategory": "64ddd580257516b670b5a3e1"
+    },
+    {
+        "name": "curved monitors",
+        "image": "/assets/subcategories/monitors/curved-monitors.jpg",
+        "category": "64ddd6008032c9ba8cbaa5ef",
+        "mainCategory": "64ddd580257516b670b5a3e1"
+    },
+    {
+        "name": "gaming monitors",
+        "image": "/assets/subcategories/monitors/gaming-monitors.jpg",
+        "category": "64ddd6008032c9ba8cbaa5ef",
+        "mainCategory": "64ddd580257516b670b5a3e1"
+    },
+    {
+        "name": "printers & all-in-one",
+        "image": "/assets/subcategories/printers-scanners/printers-and-all-in-one.jpg",
+        "category": "64ddd6008032c9ba8cbaa5f0",
+        "mainCategory": "64ddd580257516b670b5a3e1"
+    },
+    {
+        "name": "inkjet printers",
+        "image": "/assets/subcategories/printers-scanners/inkjet-printers.jpg",
+        "category": "64ddd6008032c9ba8cbaa5f0",
+        "mainCategory": "64ddd580257516b670b5a3e1"
+    },
+    {
+        "name": "laser printers",
+        "image": "/assets/subcategories/printers-scanners/laser-printers.jpg",
+        "category": "64ddd6008032c9ba8cbaa5f0",
+        "mainCategory": "64ddd580257516b670b5a3e1"
+    },
+    {
+        "name": "scanners",
+        "image": "/assets/subcategories/printers-scanners/scanners.jpg",
+        "category": "64ddd6008032c9ba8cbaa5f0",
+        "mainCategory": "64ddd580257516b670b5a3e1"
+    },
+    {
+        "name": "mouse",
+        "image": "/assets/subcategories/input devices/mouse.jpg",
+        "category": "64ddd6008032c9ba8cbaa5f1",
+        "mainCategory": "64ddd580257516b670b5a3e1"
+    },
+    {
+        "name": "keyboards",
+        "image": "/assets/subcategories/input devices/keyboards.jpg",
+        "category": "64ddd6008032c9ba8cbaa5f1",
+        "mainCategory": "64ddd580257516b670b5a3e1"
+    },
+    {
+        "name": "headsets",
+        "image": "/assets/subcategories/input devices/headsets.jpg",
+        "category": "64ddd6008032c9ba8cbaa5f1",
+        "mainCategory": "64ddd580257516b670b5a3e1"
+    },
+    {
+        "name": "card readers",
+        "image": "/assets/subcategories/input devices/card-readers.jpg",
+        "category": "64ddd6008032c9ba8cbaa5f1",
+        "mainCategory": "64ddd580257516b670b5a3e1"
+    },
+    {
+        "name": "cases",
+        "image": "/assets/subcategories/pc-components/cases.jpg",
+        "category": "64ddd6008032c9ba8cbaa5f2",
+        "mainCategory": "64ddd580257516b670b5a3e2"
+    },
+    {
+        "name": "processors",
+        "image": "/assets/subcategories/pc-components/processors.jpg",
+        "category": "64ddd6008032c9ba8cbaa5f2",
+        "mainCategory": "64ddd580257516b670b5a3e2"
+    },
+    {
+        "name": "graphic cards",
+        "image": "/assets/subcategories/pc-components/graphics-cards.jpg",
+        "category": "64ddd6008032c9ba8cbaa5f2",
+        "mainCategory": "64ddd580257516b670b5a3e2"
+    },
+    {
+        "name": "motherboards",
+        "image": "/assets/subcategories/pc-components/motherboards.jpg",
+        "category": "64ddd6008032c9ba8cbaa5f2",
+        "mainCategory": "64ddd580257516b670b5a3e2"
+    },
+    {
+        "name": "memory ram",
+        "image": "/assets/subcategories/pc-components/memory-ram.jpg",
+        "category": "64ddd6008032c9ba8cbaa5f2",
+        "mainCategory": "64ddd580257516b670b5a3e2"
+    },
+    {
+        "name": "pc power supply unit",
+        "image": "/assets/subcategories/pc-components/pc-power-supply-unit.jpg",
+        "category": "64ddd6008032c9ba8cbaa5f2",
+        "mainCategory": "64ddd580257516b670b5a3e2"
+    },
+    {
+        "name": "ssd drive",
+        "image": "/assets/subcategories/pc-components/ssd-drive.jpg",
+        "category": "64ddd6008032c9ba8cbaa5f2",
+        "mainCategory": "64ddd580257516b670b5a3e2"
+    },
+    {
+        "name": "hdd drive",
+        "image": "/assets/subcategories/pc-components/hdd-drive.jpg",
+        "category": "64ddd6008032c9ba8cbaa5f2",
+        "mainCategory": "64ddd580257516b670b5a3e2"
+    },
+    {
+        "name": "cpu fan",
+        "image": "/assets/subcategories/cooling/cpu-fan.jpg",
+        "category": "64ddd6008032c9ba8cbaa5f3",
+        "mainCategory": "64ddd580257516b670b5a3e2"
+    },
+    {
+        "name": "case fan",
+        "image": "/assets/subcategories/cooling/case-fan.jpg",
+        "category": "64ddd6008032c9ba8cbaa5f3",
+        "mainCategory": "64ddd580257516b670b5a3e2"
+    },
+    {
+        "name": "thermal paste",
+        "image": "/assets/subcategories/cooling/thermal-paste.jpg",
+        "category": "64ddd6008032c9ba8cbaa5f3",
+        "mainCategory": "64ddd580257516b670b5a3e2"
+    },
+    {
+        "name": "cables & adapters",
+        "image": "/assets/subcategories/hardware-other/cables-and-adapters.jpg",
+        "category": "64ddd6008032c9ba8cbaa5f4",
+        "mainCategory": "64ddd580257516b670b5a3e2"
+    },
+    {
+        "name": "wifi routers",
+        "image": "/assets/subcategories/hardware-other/wifi-routers.jpg",
+        "category": "64ddd6008032c9ba8cbaa5f4",
+        "mainCategory": "64ddd580257516b670b5a3e2"
+    },
+    {
+        "name": "wifi sticks",
+        "image": "/assets/subcategories/hardware-other/wifi-stick.jpg",
+        "category": "64ddd6008032c9ba8cbaa5f4",
+        "mainCategory": "64ddd580257516b670b5a3e2"
+    },
+    {
+        "name": "disc drives",
+        "image": "/assets/subcategories/hardware-other/disc-drives.jpg",
+        "category": "64ddd6008032c9ba8cbaa5f4",
+        "mainCategory": "64ddd580257516b670b5a3e2"
+    },
+    {
+        "name": "apple iphone",
+        "image": "/assets/subcategories/mobile-phones/mobile-phones-apple-iphone.jpg",
+        "category": "64ddd6008032c9ba8cbaa5f5",
+        "mainCategory": "64ddd580257516b670b5a3e3"
+    },
+    {
+        "name": "android smartphone",
+        "image": "/assets/subcategories/mobile-phones/android-smartphone.jpg",
+        "category": "64ddd6008032c9ba8cbaa5f5",
+        "mainCategory": "64ddd580257516b670b5a3e3"
+    },
+    {
+        "name": "button mobile phones",
+        "image": "/assets/subcategories/mobile-phones/button-mobile-phones.jpg",
+        "category": "64ddd6008032c9ba8cbaa5f5",
+        "mainCategory": "64ddd580257516b670b5a3e3"
+    },
+    {
+        "name": "smart watches",
+        "image": "/assets/subcategories/wearables/smart-watches.jpg",
+        "category": "64ddd6008032c9ba8cbaa5f6",
+        "mainCategory": "64ddd580257516b670b5a3e3"
+    },
+    {
+        "name": "sport watches",
+        "image": "/assets/subcategories/wearables/sport-watches.jpg",
+        "category": "64ddd6008032c9ba8cbaa5f6",
+        "mainCategory": "64ddd580257516b670b5a3e3"
+    },
+    {
+        "name": "cases",
+        "image": "/assets/subcategories/accessories/accessories-cases.jpg",
+        "category": "64ddd6008032c9ba8cbaa5f7",
+        "mainCategory": "64ddd580257516b670b5a3e3"
+    },
+    {
+        "name": "powerbanks",
+        "image": "/assets/subcategories/accessories/powerbanks.jpg",
+        "category": "64ddd6008032c9ba8cbaa5f7",
+        "mainCategory": "64ddd580257516b670b5a3e3"
+    },
+    {
+        "name": "watch straps",
+        "image": "/assets/subcategories/accessories/watch-straps.jpg",
+        "category": "64ddd6008032c9ba8cbaa5f7",
+        "mainCategory": "64ddd580257516b670b5a3e3"
+    },
+    {
+        "name": "playstation consoles",
+        "image": "/assets/subcategories/consoles/playstation-consoles.jpg",
+        "category": "64ddd6008032c9ba8cbaa5f8",
+        "mainCategory": "64ddd580257516b670b5a3e4"
+    },
+    {
+        "name": "xbox consoles",
+        "image": "/assets/subcategories/consoles/consoles-xbox-consoles.jpg",
+        "category": "64ddd6008032c9ba8cbaa5f8",
+        "mainCategory": "64ddd580257516b670b5a3e4"
+    },
+    {
+        "name": "nintendo consoles",
+        "image": "/assets/subcategories/consoles/nintendo-consoles.jpg",
+        "category": "64ddd6008032c9ba8cbaa5f8",
+        "mainCategory": "64ddd580257516b670b5a3e4"
+    },
+    {
+        "name": "consoles games",
+        "image": "/assets/subcategories/consoles/consoles-games.jpg",
+        "category": "64ddd6008032c9ba8cbaa5f8",
+        "mainCategory": "64ddd580257516b670b5a3e4"
+    },
+    {
+        "name": "pc games",
+        "image": "/assets/subcategories/pc-gaming/pc-games.jpg",
+        "category": "64ddd6008032c9ba8cbaa5f9",
+        "mainCategory": "64ddd580257516b670b5a3e4"
+    },
+    {
+        "name": "gamespads",
+        "image": "/assets/subcategories/pc-gaming/gamepads.jpg",
+        "category": "64ddd6008032c9ba8cbaa5f9",
+        "mainCategory": "64ddd580257516b670b5a3e4"
+    },
+    {
+        "name": "wheels",
+        "image": "/assets/subcategories/pc-gaming/wheels.jpg",
+        "category": "64ddd6008032c9ba8cbaa5f9",
+        "mainCategory": "64ddd580257516b670b5a3e4"
+    },
+    {
+        "name": "vr headsets",
+        "image": "/assets/subcategories/pc-gaming/vr-headsets.jpg",
+        "category": "64ddd6008032c9ba8cbaa5f9",
+        "mainCategory": "64ddd580257516b670b5a3e4"
+    },
+    {
+        "name": "8k tv",
+        "image": "/assets/subcategories/tvs/tvs-8k-tv.jpg",
+        "category": "64ddd6008032c9ba8cbaa5fa",
+        "mainCategory": "64ddd580257516b670b5a3e5"
+    },
+    {
+        "name": "4k tv",
+        "image": "/assets/subcategories/tvs/4k-tv.jpg",
+        "category": "64ddd6008032c9ba8cbaa5fa",
+        "mainCategory": "64ddd580257516b670b5a3e5"
+    },
+    {
+        "name": "oled tv",
+        "image": "/assets/subcategories/tvs/oled-tv.jpg",
+        "category": "64ddd6008032c9ba8cbaa5fa",
+        "mainCategory": "64ddd580257516b670b5a3e5"
+    },
+    {
+        "name": "turntables",
+        "image": "/assets/subcategories/hi-fi/turntables.jpg",
+        "category": "64ddd6008032c9ba8cbaa5fb",
+        "mainCategory": "64ddd580257516b670b5a3e5"
+    },
+    {
+        "name": "amplifier",
+        "image": "/assets/subcategories/hi-fi/amplifier.jpg",
+        "category": "64ddd6008032c9ba8cbaa5fb",
+        "mainCategory": "64ddd580257516b670b5a3e5"
+    },
+    {
+        "name": "hifi speakers",
+        "image": "/assets/subcategories/hi-fi/hifi-speakers.jpg",
+        "category": "64ddd6008032c9ba8cbaa5fb",
+        "mainCategory": "64ddd580257516b670b5a3e5"
+    },
+    {
+        "name": "dslr",
+        "image": "/assets/subcategories/photo-video-cameras/dslr-cameras.jpg",
+        "category": "64ddd6008032c9ba8cbaa5fc",
+        "mainCategory": "64ddd580257516b670b5a3e6"
+    },
+    {
+        "name": "mirrorless",
+        "image": "/assets/subcategories/photo-video-cameras/photo-and-video-cameras-mirrorless-cameras.jpg",
+        "category": "64ddd6008032c9ba8cbaa5fc",
+        "mainCategory": "64ddd580257516b670b5a3e6"
+    },
+    {
+        "name": "full frame",
+        "image": "/assets/subcategories/photo-video-cameras/full-frame-cameras.jpg",
+        "category": "64ddd6008032c9ba8cbaa5fc",
+        "mainCategory": "64ddd580257516b670b5a3e6"
+    },
+    {
+        "name": "drones",
+        "image": "/assets/subcategories/photo-video-cameras/drones.jpg",
+        "category": "64ddd6008032c9ba8cbaa5fc",
+        "mainCategory": "64ddd580257516b670b5a3e6"
+    },
+    {
+        "name": "bags and cases",
+        "image": "/assets/subcategories/photo-accessories/bags-and-cases.jpg",
+        "category": "64ddd6008032c9ba8cbaa5fd",
+        "mainCategory": "64ddd580257516b670b5a3e6"
+    },
+    {
+        "name": "tripods",
+        "image": "/assets/subcategories/photo-accessories/tripods.jpg",
+        "category": "64ddd6008032c9ba8cbaa5fd",
+        "mainCategory": "64ddd580257516b670b5a3e6"
+    },
+    {
+        "name": "battery grips",
+        "image": "/assets/subcategories/photo-accessories/battery-grips.jpg",
+        "category": "64ddd6008032c9ba8cbaa5fd",
+        "mainCategory": "64ddd580257516b670b5a3e6"
+    },
+    {
+        "name": "steadicam",
+        "image": "/assets/subcategories/photo-accessories/steadicam.jpg",
+        "category": "64ddd6008032c9ba8cbaa5fd",
+        "mainCategory": "64ddd580257516b670b5a3e6"
+    },
+    {
+        "name": "dishwashers",
+        "image": "/assets/subcategories/kitchen/dishwashers.jpg",
+        "category": "64ddd6008032c9ba8cbaa5fe",
+        "mainCategory": "64ddd580257516b670b5a3e7"
+    },
+    {
+        "name": "fridges",
+        "image": "/assets/subcategories/kitchen/fridges.jpg",
+        "category": "64ddd6008032c9ba8cbaa5fe",
+        "mainCategory": "64ddd580257516b670b5a3e7"
+    },
+    {
+        "name": "ovens",
+        "image": "/assets/subcategories/kitchen/kitchen-ovens.jpg",
+        "category": "64ddd6008032c9ba8cbaa5fe",
+        "mainCategory": "64ddd580257516b670b5a3e7"
+    },
+    {
+        "name": "blenders",
+        "image": "/assets/subcategories/kitchen/blenders.jpg",
+        "category": "64ddd6008032c9ba8cbaa5fe",
+        "mainCategory": "64ddd580257516b670b5a3e7"
+    },
+    {
+        "name": "washing machines",
+        "image": "/assets/subcategories/bathroom/bathroom-washing-machines.jpg",
+        "category": "64ddd6008032c9ba8cbaa5ff",
+        "mainCategory": "64ddd580257516b670b5a3e7"
+    },
+    {
+        "name": "dryer",
+        "image": "/assets/subcategories/bathroom/dryer.jpg",
+        "category": "64ddd6008032c9ba8cbaa5ff",
+        "mainCategory": "64ddd580257516b670b5a3e7"
+    },
+    {
+        "name": "all in one",
+        "image": "/assets/subcategories/bathroom/all-in-one.jpg",
+        "category": "64ddd6008032c9ba8cbaa5ff",
+        "mainCategory": "64ddd580257516b670b5a3e7"
+    },
+    {
+        "name": "vaccum cleaners",
+        "image": "/assets/subcategories/other/vacuum-cleaners.jpg",
+        "category": "64ddd6008032c9ba8cbaa600",
+        "mainCategory": "64ddd580257516b670b5a3e7"
+    },
+    {
+        "name": "irons",
+        "image": "/assets/subcategories/other/irons.jpg",
+        "category": "64ddd6008032c9ba8cbaa600",
+        "mainCategory": "64ddd580257516b670b5a3e7"
+    },
+    {
+        "name": "air conditioners",
+        "image": "/assets/subcategories/other/air-conditioners.jpg",
+        "category": "64ddd6008032c9ba8cbaa600",
+        "mainCategory": "64ddd580257516b670b5a3e7"
+    }
+]

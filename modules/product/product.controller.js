@@ -15,13 +15,9 @@ export const addProduct = async (req, res, next) => {
   const isBrandValid = await brandModel.findOne({ subCategoryId, categoryId });
   const category = await categoryModel.findById(categoryId);
 
-  if (!isSubCategoryValid || !isBrandValid) {
-    throw new BadRequestError("invalid sub-category | brand");
-  }
+  if (!isSubCategoryValid || !isBrandValid) throw new BadRequestError("invalid sub-category | brand");
 
-  if (!images) {
-    throw new BadRequestError("upload images");
-  }
+  if (!images) throw new BadRequestError("upload images");
 
   let stock = 0;
 
@@ -45,9 +41,7 @@ export const addProduct = async (req, res, next) => {
     sizesCount = newSizes.count;
   }
 
-  if (stock !== sizesCount) {
-    throw new BadRequestError("products count don't match");
-  }
+  if (stock !== sizesCount) throw new BadRequestError("products count don't match");
 
   const priceAfterDiscount = price - price * (discount || 0 / 100);
 
@@ -68,8 +62,8 @@ export const addProduct = async (req, res, next) => {
 
   // final object
   const productObj = {
-    name, description, price, discount, priceAfterDiscount, stock, colors: newColors, sizes: newSizes, soldItems, categoryId,
-    subCategoryId, brandId, slug, customId, images: imagesArr,
+    name, description, price, discount, priceAfterDiscount, stock, colors: newColors, sizes: newSizes, soldItems, category: categoryId,
+    subCategory: subCategoryId, brand: brandId, slug, customId, images: imagesArr,
   };
 
   const productCreate = await productModel.create(productObj);
@@ -80,6 +74,7 @@ export const addProduct = async (req, res, next) => {
 
   res.status(StatusCodes.CREATED).json({ response: successRes, message: "product created", productCreate });
 };
+
 
 export const updateProduct = async (req, res, next) => {
   const { id } = req.params
@@ -102,7 +97,6 @@ export const updateProduct = async (req, res, next) => {
     throw new BadRequestError("invalid sub-category | brand");
   }
 
-
   let stock = 0;
 
   let newColors;
@@ -133,7 +127,7 @@ export const updateProduct = async (req, res, next) => {
 
   const slug = slugify(name);
 
-  //   images;
+  //images;
   const customId = slug + "_" + nanoid(5);
   let imagesArr = [];
   let publicIds = [];
@@ -160,8 +154,8 @@ export const updateProduct = async (req, res, next) => {
 
   // final object
   const productObj = {
-    name, description, price, discount, priceAfterDiscount, stock, colors: newColors, sizes: newSizes, soldItems, categoryId,
-    subCategoryId, brandId, slug, customId, images: imagesArr,
+    name, description, price, discount, priceAfterDiscount, stock, colors: newColors, sizes: newSizes, soldItems, category: categoryId,
+    subCategory: subCategoryId, brand: brandId, slug, customId, images: imagesArr,
   };
 
   const productUpdate = await productModel.findByIdAndUpdate(id, productObj);
@@ -172,37 +166,30 @@ export const updateProduct = async (req, res, next) => {
 export const deleteProduct = async (req, res, next) => {
   const { id } = req.params
   const product = await productModel.findById(id);
-  if (!product) {
-    throw new NotFoundError("product not found")
-  }
-  const category = await categoryModel.findById(product.categoryId);
-  const subCategory = await subCategoryModel.findById(product.subCategoryId)
-  const brand = await brandModel.findById(product.brandId)
-  console.log(brand)
+  if (!product) throw new NotFoundError("product not found")
+  const category = await categoryModel.findById(product.category);
+  const subCategory = await subCategoryModel.findById(product.subCategory)
+  const brand = await brandModel.findById(product.brand)
   await cloudinary.api.delete_resources_by_prefix(
     `ecom/categories/${category.customId}/subCategories/${subCategory.customId}/brands/${brand.customId}/products/${product.customId}`,
   )
-
   await cloudinary.api.delete_folder(
     `ecom/categories/${category.customId}/subCategories/${subCategory.customId}/brands/${brand.customId}/products/${product.customId}`,
   )
-
   await productModel.findByIdAndDelete(id);
-
   res.status(StatusCodes.OK).json({ response: successRes, message: "product deleted" });
 };
 
 export const getAllProducts = async (req, res) => {
   const products = await productModel.find({})
 
-  return res.status(StatusCodes.OK).json({ response: successRes, message: "all products", products })
+  return res.status(StatusCodes.OK).json({ response: successRes, message: "all products", data: products })
 }
 
 export const getSingleProduct = async (req, res) => {
   const { id } = req.params;
   const product = await productModel.findById(id)
-  if (!product) {
-    throw new NotFoundError("not found product")
-  }
-  return res.status(StatusCodes.OK).json({ response: successRes, message: "single product", product })
+  if (!product) throw new NotFoundError("not found product")
+
+  return res.status(StatusCodes.OK).json({ response: successRes, message: "single product", data: product })
 }

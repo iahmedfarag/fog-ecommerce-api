@@ -5,150 +5,96 @@ import slugify from "slugify";
 import { StatusCodes } from "http-status-codes";
 import { successRes } from './../../variables.js';
 import { brandModel, productModel, subCategoryModel, categoryModel } from './../../db/models/index.js';
+import categories from "../../data/categories.json" assert { type: "json" };
+import path from "path"
 
-
-export const addCategory = async (req, res, next) => {
+// ===== add category ===== // 
+export const addCategory = async (req, res) => {
     const { name } = req.body;
-    const image = req.file;
 
     const category = await categoryModel.findOne({ name });
+    if (category) throw new BadRequestError("category already exist")
 
-    if (category) {
-        throw new BadRequestError("category already exist")
-    }
-
-    if (!image) {
-        return new BadRequestError("upload photo for category please")
-    }
     const slug = slugify(name)
-
     const customId = slug + "_" + nanoid(5)
 
+    const categoryCreate = await categoryModel.create({ name, slug, customId })
 
-    const { public_id, secure_url } = await cloudinary.uploader.upload(image.path, { folder: `ecom/categories/${customId}` })
-
-
-    const categoryObj = {
-        name,
-        slug,
-        image: {
-            secure_url,
-            public_id,
-        },
-        customId,
-    }
-
-    const cat = await categoryModel.create(categoryObj)
-    if (!cat) {
-        await cloudinary.uploader.destroy(public_id)
-        throw new BadRequestError("try again please")
-    }
-    res.status(StatusCodes.OK).json({ response: successRes, message: "category created", cat })
+    res.status(StatusCodes.OK).json({ response: successRes, message: "category created", data: categoryCreate })
 }
 
-export const updateCategory = async (req, res) => {
-    const { id } = req.params;
-    const { name } = req.body;
-    const image = req.file
 
-    const category = await categoryModel.findById(id);
+// ===== add many category ===== // 
+export const addMany = async (req, res) => {
+    let newArr = [];
+    let finalArr = []
+    categories.map(item => {
+        item.name.toLowerCase()
+        let slug = slugify(item.name);
+        let customId = slug + "-" + nanoid(5)
+        newArr.push({ ...item, slug, customId })
+    })
 
-    if (!category) {
-        throw new NotFoundError("category not found");
-    }
-
-    const isNameUnq = await categoryModel.findOne({ name: name.toLowerCase() })
-
-    if (name.toLowerCase() === category.name || isNameUnq) {
-        throw new BadRequestError("choose another category name please!")
-    }
-
-    if (image) {
-        await cloudinary.uploader.destroy(category.image.public_id);
-    }
-
-    const { public_id, secure_url } = await cloudinary.uploader.upload(image.path, { folder: `ecom/categories/${category.customId}` })
-
-    category.name = name;
-    category.customId = slugify(name) + nanoid(5)
-    category.image.public_id = public_id;
-    category.image.secure_url = secure_url;
-    await category.save();
-
-    res.status(StatusCodes.OK).json({ response: successRes, message: 'category updated', category })
+    const result = await categoryModel.create(newArr)
+    res.status(StatusCodes.OK).json({ response: successRes, message: "added many categories", data: result })
 }
 
-export const deleteCategory = async (req, res, next) => {
+
+// ===== delete category ===== // 
+export const deleteCategory = async (req, res) => {
     const { id } = req.params
-    // check category id
-    const categoryExists = await categoryModel.findByIdAndDelete(id)
-    if (!categoryExists) {
-        throw new BadRequestError("invalid category id")
-    }
+    const category = await categoryModel.findById(id)
+    if (!category) throw new BadRequestError("invalid category id")
 
-    //=========== Delete from cloudinary ==============
-    await cloudinary.api.delete_resources_by_prefix(
-        `ecom/categories/${categoryExists.customId}`,
-    )
-
-    await cloudinary.api.delete_folder(
-        `ecom/categories/${categoryExists.customId}`,
-    )
-
-    //=========== Delete from DB ==============
-
-    const deleteRelatedSubCategories = await subCategoryModel.deleteMany({ categoryId: id })
-    const deleteRelatedBrands = await brandModel.deleteMany({ categoryId: id })
-    const deleteRelatedProducts = await productModel.deleteMany({ categoryId: id })
-
-    // if (!deleteRelatedSubCategories.deletedCount || !deleteRelatedBrands.deletedCount || !deleteRelatedProducts.deletedCount) {
-    //     throw new BadRequestError("delete fail")
-    // }
-
+    await categoryModel.findByIdAndDelete(id)
     res.status(StatusCodes.OK).json({ response: successRes, messsage: 'category deleted' })
 }
 
-export const getAllCategories = async (req, res, next) => {
-    // const categories = await categoryModel.find();
 
-    let categoriesArr = []
-
-    // categories.map(async (category) => {
-    //     const subCategory = await subCategoryModel.find({ categoryId: category._id });
-    //     let categoryObj = category.toObject();
-    //     categoryObj.subCategories = subCategory;
-    //     categoriesArr.push(categoryObj)
-    // })
-
-    // for (const category of categories) {
-    //     const subCategories = await subCategoryModel.find({ categoryId: category._id });
-    //     let objectCat = category.toObject();
-    //     objectCat.subCategories = subCategories;
-    //     categoriesArr.push(objectCat);
-    // }
-
-    const cursor = categoryModel.find().cursor()
-    for (let doc = await cursor.next(); doc != null; doc = await cursor.next()) {
-        const subCategories = await subCategoryModel.find({
-            categoryId: doc._id,
-        })
-
-        const objectCat = doc.toObject()
-        objectCat.subCategories = subCategories
-        categoriesArr.push(objectCat)
+// ===== delete all categories ===== // 
+export const deleteAll = async (req, res) => {
+    const categoryies = await categoryModel.find({});
+    if (!categoryies) throw BadRequestError("no categories found")
+    for (let i = 0; i < categoryies.length; i++) {
+        categoryies[i].deleteOne();
     }
-
-
-    res.status(StatusCodes.OK).json({ response: successRes, message: "all categories", categoriesArr })
+    res.status(StatusCodes.OK).json({ response: successRes, messsage: 'categories deleted' })
 }
 
-export const getCategory = async (req, res, next) => {
+// ===== get all categories ===== // 
+export const getAllCategories = async (req, res) => {
+    const categories = await categoryModel.find({})
+    // let categories = []
+    // const cursor = categoryModel.find().cursor()
+    // for (let doc = await cursor.next(); doc != null; doc = await cursor.next()) {
+    //     const subCategories = await subCategoryModel.find({ categoryId: doc._id, })
+    //     const objectCat = doc.toObject()
+    //     objectCat.subCategories = subCategories
+    //     categories.push(objectCat)
+    // }
+    res.status(StatusCodes.OK).json({ response: successRes, message: "all categories", data: categories })
+}
+
+// ===== get category ===== // 
+export const getCategory = async (req, res) => {
     const { id } = req.params
     const category = await categoryModel.findById(id)
 
-    if (!category) {
-        throw new NotFoundError("category not found")
-    }
+    if (!category) throw new NotFoundError("category not found")
 
-    res.status(StatusCodes.OK).json({ response: successRes, message: "single category", category })
+    res.status(StatusCodes.OK).json({ response: successRes, message: "single category", data: category })
+}
+
+
+// ===== update category ===== // 
+export const updateCategory = async (req, res) => {
+    const { id } = req.params;
+    const { name } = req.body;
+    const category = await categoryModel.findById(id);
+    if (!category) throw new NotFoundError("category not found");
+    const isNameUnq = await categoryModel.findOne({ name: name.toLowerCase() })
+    if (name.toLowerCase() === category.name || isNameUnq) throw new BadRequestError("choose another category name please!")
+    category.name = name;
+    await category.save();
+    res.status(StatusCodes.OK).json({ response: successRes, message: 'category updated', category })
 }
