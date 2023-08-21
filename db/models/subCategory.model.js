@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 const subCategorySchema = new mongoose.Schema({
+    // ===== text =====
     name: {
         type: String,
         lowercase: true,
@@ -13,6 +14,16 @@ const subCategorySchema = new mongoose.Schema({
         lowercase: true,
         required: true,
     },
+    featured: {
+        type: Boolean,
+        default: false
+    },
+
+    // ===== images =====
+    customId: {
+        type: String,
+        required: true
+    },
     image: {
         secure_url: {
             type: String,
@@ -23,10 +34,8 @@ const subCategorySchema = new mongoose.Schema({
             required: true,
         },
     },
-    customId: {
-        type: String,
-        required: true
-    },
+
+    // ===== related =====
     mainCategory: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "mainCategory",

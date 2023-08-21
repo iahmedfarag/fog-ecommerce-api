@@ -5,8 +5,7 @@ import { nanoid } from "nanoid";
 import cloudinary from './../../utils/cloudinaryConfig.js';
 import { BadRequestError, NotFoundError } from "../../errors/index.js";
 import { StatusCodes } from "http-status-codes";
-import mainCategories from "../../data/mainCategories.json" assert { type: "json" };
-import path from 'path'
+
 
 
 // ===== add main-category ===== //
@@ -34,22 +33,22 @@ export const addMainCategory = async (req, res) => {
 }
 
 // ===== add many ===== //
-export const addManyMainCategories = async (req, res) => {
-    let newArr = [];
-    let finalArr = []
-    mainCategories.map(item => {
-        item.name.toLowerCase()
-        let slug = slugify(item.name);
-        let customId = slug + "-" + nanoid(5)
-        newArr.push({ ...item, icon: path.resolve() + item.icon, slug, customId })
-    })
-    for (let i = 0; i < newArr.length; i++) {
-        const { public_id, secure_url } = await cloudinary.uploader.upload(newArr[i].icon, { folder: `ecom/main-categories/${newArr[i].customId}` })
-        finalArr.push({ ...newArr[i], icon: { public_id, secure_url } })
-    }
-    const result = await mainCategoryModel.create(finalArr)
-    res.status(StatusCodes.OK).json({ response: successRes, message: "added many main-categories", data: result })
-}
+// export const addManyMainCategories = async (req, res) => {
+//     let newArr = [];
+//     let finalArr = []
+//     mainCategories.map(item => {
+//         item.name.toLowerCase()
+//         let slug = slugify(item.name);
+//         let customId = slug + "-" + nanoid(5)
+//         newArr.push({ ...item, icon: path.resolve() + item.icon, slug, customId })
+//     })
+//     for (let i = 0; i < newArr.length; i++) {
+//         const { public_id, secure_url } = await cloudinary.uploader.upload(newArr[i].icon, { folder: `ecom/main-categories/${newArr[i].customId}` })
+//         finalArr.push({ ...newArr[i], icon: { public_id, secure_url } })
+//     }
+//     const result = await mainCategoryModel.create(finalArr)
+//     res.status(StatusCodes.OK).json({ response: successRes, message: "added many main-categories", data: result })
+// }
 
 // ===== get single ===== //
 export const getMainCategory = async (req, res) => {

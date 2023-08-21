@@ -1,7 +1,7 @@
 // ---------- ``first round`` ---------- //
 
 // ---------- Modules ---------- //
-[ main-category - cateogry - subcategory - brand - product ]
+[ main-category - cateogry - subcategory - product ]
 
 // ---------- CRUD ---------- //
 

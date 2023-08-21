@@ -5,7 +5,6 @@ import connectFun from './db/dbConnection.js';
 import errorHandler from "./middleware/errorHandler.js";
 import notFoundMiddleware from "./middleware/notFoundMiddleware.js";
 import { categoryRouter, subCategoryRouter } from "./modules/index.js";
-import brandRouter from "./modules/brand/brand.router.js";
 import productRouter from "./modules/product/product.router.js";
 import cors from "cors"
 import mainCategoryRouter from "./modules/mainCategory/mainCategory.router.js";
@@ -17,7 +16,6 @@ app.use(cors())
 app.get('/', (req, res) => res.send('<h6>ecom website</h6>'))
 app.use("/categories", categoryRouter)
 app.use("/subcategories", subCategoryRouter)
-app.use("/brands", brandRouter)
 app.use("/products", productRouter)
 app.use("/mainCategories", mainCategoryRouter)
 

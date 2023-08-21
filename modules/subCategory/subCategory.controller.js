@@ -4,13 +4,12 @@ import cloudinary from "../../utils/cloudinaryConfig.js";
 import slugify from 'slugify';
 import { StatusCodes } from "http-status-codes";
 import { successRes } from "../../variables.js";
-import { brandModel, productModel, subCategoryModel, categoryModel } from './../../db/models/index.js';
-import subcategories from "../../data/subCategories.json" assert { type: "json" };
-import path from 'path'
-import mainCategoryModel from "../../db/models/mainCategory.model.js";
+import { productModel, subCategoryModel, categoryModel, mainCategoryModel } from './../../db/models/index.js';
+
+
 // -------- add sub category -------- // 
 export const addSubCategory = async (req, res, next) => {
-    const { name, categoryId } = req.body;
+    const { name, categoryId, featured } = req.body;
     const image = req.file
 
     const subCategory = await subCategoryModel.findOne({ name: name.toLowerCase() });
@@ -25,7 +24,7 @@ export const addSubCategory = async (req, res, next) => {
         folder: `ecom/categories/${category.customId}/subCategories/${customId}`
     })
 
-    const subCategoryObj = { name, category: categoryId, image: { public_id, secure_url }, slug, customId, }
+    const subCategoryObj = { name, category: categoryId, image: { public_id, secure_url }, slug, customId, featured }
     const sub = await subCategoryModel.create(subCategoryObj)
 
     if (!sub) {
@@ -70,7 +69,6 @@ export const deleteSubCategory = async (req, res) => {
     await cloudinary.api.delete_resources_by_prefix(`ecom/categories/${category.customId}/subCategories/${subCategory.customId}`,)
     await cloudinary.api.delete_folder(`ecom/categories/${category.customId}/subCategories/${subCategory.customId}`,)
     //=========== Delete from DB ==============
-    const deleteRelatedBrands = await brandModel.deleteMany({ subCategoryId: id })
     const deleteRelatedProducts = await productModel.deleteMany({ subCategoryId: id })
 
     res.status(StatusCodes.OK).json({ response: successRes, message: "sub category deleted" })
@@ -78,7 +76,7 @@ export const deleteSubCategory = async (req, res) => {
 
 // -------- get all sub categories -------- // 
 export const getAllSubCategories = async (req, res) => {
-    const subCategories = await subCategoryModel.find({}).populate([{ path: "categoryId", select: 'slug' }])
+    const subCategories = await subCategoryModel.find({})
 
     res.status(StatusCodes.OK).json({ response: successRes, message: "get all sub categoris", data: subCategories })
 }
@@ -93,32 +91,36 @@ export const getSingleSubCategory = async (req, res) => {
 }
 
 // -------- add many sub categories -------- // 
-export const addMany = async (req, res, next) => {
-    let newArr = [];
-    let finalArr = []
+// export const addMany = async (req, res, next) => {
+//     let newArr = [];
+//     let finalArr = []
 
-    subcategories.map(item => {
-        item.name.toLowerCase()
-        let slug = slugify(item.name);
-        let customId = slug + "-" + nanoid(5)
-        newArr.push({ ...item, image: path.resolve() + item.image, slug, customId })
-    })
+//     subcategories.map((item, index) => {
+//         let featured = false
+//         item.name.toLowerCase()
+//         let slug = slugify(item.name);
+//         let customId = slug + "-" + nanoid(5)
+//         if (index === 1 || index === 2) {
+//             featured = true
+//         }
+//         newArr.push({ ...item, image: path.resolve() + item.image, slug, customId, featured })
+//     })
 
-    for (let i = 0; i < newArr.length; i++) {
-        const mainCategory = await mainCategoryModel.findById(newArr[i].mainCategory)
-        const category = await categoryModel.findById(newArr[i].category)
-        if (!mainCategory) throw new NotFoundError("main-category not found")
+//     for (let i = 0; i < newArr.length; i++) {
+//         const mainCategory = await mainCategoryModel.findById(newArr[i].mainCategory)
+//         const category = await categoryModel.findById(newArr[i].category)
+//         if (!mainCategory) throw new NotFoundError("main-category not found")
 
-        const { public_id, secure_url } = await cloudinary.uploader.upload(newArr[i].image,
-            { folder: `ecom/main-categories/${mainCategory.customId}/categories/${category.customId}/sub-categories/${newArr[i].customId}` })
+//         const { public_id, secure_url } = await cloudinary.uploader.upload(newArr[i].image,
+//             { folder: `ecom/main-categories/${mainCategory.customId}/categories/${category.customId}/sub-categories/${newArr[i].customId}` })
 
-        finalArr.push({ ...newArr[i], image: { public_id, secure_url } })
-    }
+//         finalArr.push({ ...newArr[i], image: { public_id, secure_url } })
+//     }
 
-    const result = await subCategoryModel.create(finalArr)
+//     const result = await subCategoryModel.create(finalArr)
 
-    res.status(StatusCodes.OK).json({ response: successRes, message: "added many sub-categories", data: result })
-}
+//     res.status(StatusCodes.OK).json({ response: successRes, message: "added many sub-categories", data: result })
+// }
 
 // -------- delete all sub categories -------- // 
 export const deleteAll = async (req, res, next) => {

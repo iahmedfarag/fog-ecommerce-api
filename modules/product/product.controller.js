@@ -4,192 +4,94 @@ import { BadRequestError, NotFoundError } from "../../errors/index.js";
 import cloudinary from "../../utils/cloudinaryConfig.js";
 import { StatusCodes } from "http-status-codes";
 import { badRes, successRes } from "../../variables.js";
-import { brandModel, productModel, subCategoryModel, categoryModel } from './../../db/models/index.js';
+import { productModel, subCategoryModel, categoryModel, mainCategoryModel } from './../../db/models/index.js';
+
 
 // price = price - ( price * (discount/ 100))
-export const addProduct = async (req, res, next) => {
-  const { name, description, price, discount, colors, sizes, soldItems, categoryId, subCategoryId, brandId } = req.body;
-  const images = req.files;
 
-  const isSubCategoryValid = await subCategoryModel.findOne({ categoryId });
-  const isBrandValid = await brandModel.findOne({ subCategoryId, categoryId });
-  const category = await categoryModel.findById(categoryId);
+// ===== add product ===== //
+export const addProduct = async (req, res) => {
+    const { name, description, brand, price, discountPercentegeAmount,
+        stock, soldItems, availableItems, averageRating, featured, freeShipping,
+        mainCategory, category, subCategory } = req.body
+    const imagesFiles = req.files
 
-  if (!isSubCategoryValid || !isBrandValid) throw new BadRequestError("invalid sub-category | brand");
-
-  if (!images) throw new BadRequestError("upload images");
-
-  let stock = 0;
-
-  let newColors;
-  let newSizes;
-  if (typeof colors === "object") {
-    newColors = colors.map((color) => JSON.parse(color));
-    newColors.map((color) => (stock += color.count));
-  }
-  if (typeof colors === "string") {
-    newColors = JSON.parse(colors);
-    stock = newColors.count;
-  }
-  let sizesCount = 0;
-  if (typeof sizes === "object") {
-    newSizes = sizes.map((size) => JSON.parse(size));
-    newSizes.map((size) => (sizesCount += size.count));
-  }
-  if (typeof sizes === "string") {
-    newSizes = JSON.parse(sizes);
-    sizesCount = newSizes.count;
-  }
-
-  if (stock !== sizesCount) throw new BadRequestError("products count don't match");
-
-  const priceAfterDiscount = price - price * (discount || 0 / 100);
-
-  const slug = slugify(name);
-
-  //   images;
-  const customId = slug + "_" + nanoid(5);
-  let imagesArr = [];
-  let publicIds = [];
-
-  for (const file of req.files) {
-    const { secure_url, public_id } = await cloudinary.uploader.upload(
-      file.path, { folder: `ecom/categories/${category.customId}/subCategories/${isSubCategoryValid.customId}/brands/${isBrandValid.customId}/products/${customId}`, }
-    );
-    imagesArr.push({ secure_url, public_id });
-    publicIds.push(public_id);
-  }
-
-  // final object
-  const productObj = {
-    name, description, price, discount, priceAfterDiscount, stock, colors: newColors, sizes: newSizes, soldItems, category: categoryId,
-    subCategory: subCategoryId, brand: brandId, slug, customId, images: imagesArr,
-  };
-
-  const productCreate = await productModel.create(productObj);
-  if (!productCreate) {
-    await cloudinary.api.delete_resources(publicIds);
-    throw new BadRequestError("try again please");
-  }
-
-  res.status(StatusCodes.CREATED).json({ response: successRes, message: "product created", productCreate });
-};
+    const slug = slugify(name);
+    const customId = slug + "-" + nanoid(5);
+    const serial = nanoid(6)
+    const priceAfterDiscount = price - (price * (discountPercentegeAmount / 100))
 
 
-export const updateProduct = async (req, res, next) => {
-  const { id } = req.params
-  const { name, description, price, discount, colors, sizes, soldItems, categoryId, subCategoryId, brandId } = req.body;
-  const images = req.files;
+    const mainCategoryExist = await mainCategoryModel.findById(mainCategory)
+    const categoryExist = await categoryModel.findById(category)
+    const subCategoryExist = await subCategoryModel.findById(subCategory)
 
-  const product = await productModel.findById(id);
+    if (!mainCategoryExist || !categoryExist || !subCategoryExist) throw new NotFoundError("parents not found")
 
-  if (!product) {
-    throw new NotFoundError("product not found")
-  }
+    let mainImage = {}
+    let finalImages = []
 
-  const isSubCategoryValid = await subCategoryModel.findOne({ categoryId });
-  const isBrandValid = await brandModel.findOne({ subCategoryId, categoryId });
-  const category = await categoryModel.findById(categoryId);
-  const subCategory = await subCategoryModel.findById(subCategoryId)
-  const brand = await brandModel.findById(brandId)
+    for (let i = 0; i < imagesFiles.length; i++) {
+        if (i === 0) {
+            const { public_id, secure_url } = await cloudinary.uploader.upload(imagesFiles[i].path,
+                { folder: `ecom/main-categories/${mainCategoryExist.customId}/categories/${categoryExist.customId}/sub-categories/${subCategoryExist.customId}/products/${customId}/mainImage` })
 
-  if (!isSubCategoryValid || !isBrandValid) {
-    throw new BadRequestError("invalid sub-category | brand");
-  }
+            mainImage = { public_id, secure_url }
+        }
+        const { public_id, secure_url } = await cloudinary.uploader.upload(imagesFiles[i].path,
+            { folder: `ecom/main-categories/${mainCategoryExist.customId}/categories/${categoryExist.customId}/sub-categories/${subCategoryExist.customId}/products/${customId}/images` })
+        finalImages.push({ public_id, secure_url })
 
-  let stock = 0;
-
-  let newColors;
-  let newSizes;
-  if (typeof colors === "object") {
-    newColors = colors.map((color) => JSON.parse(color));
-    newColors.map((color) => (stock += color.count));
-  }
-  if (typeof colors === "string") {
-    newColors = JSON.parse(colors);
-    stock = newColors.count;
-  }
-  let sizesCount = 0;
-  if (typeof sizes === "object") {
-    newSizes = sizes.map((size) => JSON.parse(size));
-    newSizes.map((size) => (sizesCount += size.count));
-  }
-  if (typeof sizes === "string") {
-    newSizes = JSON.parse(sizes);
-    sizesCount = newSizes.count;
-  }
-
-  if (stock !== sizesCount) {
-    throw new BadRequestError("products count don't match");
-  }
-
-  const priceAfterDiscount = price - price * (discount || 0 / 100);
-
-  const slug = slugify(name);
-
-  //images;
-  const customId = slug + "_" + nanoid(5);
-  let imagesArr = [];
-  let publicIds = [];
-  if (images) {
-    //=========== Delete from cloudinary ==============
-    await cloudinary.api.delete_resources_by_prefix(
-      `ecom/categories/${category.customId}/subCategories/${subCategory.customId}/brands/${brand.customId}/products/${product.customId}`,
-    )
-    await cloudinary.api.delete_folder(
-      `ecom/categories/${category.customId}/subCategories/${subCategory.customId}/brands/${brand.customId}/products/${product.customId}`,
-    )
-
-    //=========== add again to cloudinary ==============
-
-    for (const file of req.files) {
-      const { secure_url, public_id } = await cloudinary.uploader.upload(
-        file.path, { folder: `ecom/categories/${category.customId}/subCategories/${subCategory.customId}/brands/${brand.customId}/products/${customId}`, }
-      );
-      imagesArr.push({ secure_url, public_id });
-      publicIds.push(public_id);
     }
-  }
+    console.log(mainImage)
+    const finalProduct = {
+        name, description, brand, price, discountPercentegeAmount,
+        stock, soldItems, availableItems, averageRating, featured, freeShipping,
+        mainCategory, category, subCategory,
 
+        slug,
+        customId,
+        serial,
+        priceAfterDiscount,
+        mainImage,
+        images: finalImages
+    }
 
-  // final object
-  const productObj = {
-    name, description, price, discount, priceAfterDiscount, stock, colors: newColors, sizes: newSizes, soldItems, category: categoryId,
-    subCategory: subCategoryId, brand: brandId, slug, customId, images: imagesArr,
-  };
+    const result = await productModel.create(finalProduct);
 
-  const productUpdate = await productModel.findByIdAndUpdate(id, productObj);
-
-  res.status(StatusCodes.CREATED).json({ response: successRes, message: "product updated", productUpdate });
-};
-
-export const deleteProduct = async (req, res, next) => {
-  const { id } = req.params
-  const product = await productModel.findById(id);
-  if (!product) throw new NotFoundError("product not found")
-  const category = await categoryModel.findById(product.category);
-  const subCategory = await subCategoryModel.findById(product.subCategory)
-  const brand = await brandModel.findById(product.brand)
-  await cloudinary.api.delete_resources_by_prefix(
-    `ecom/categories/${category.customId}/subCategories/${subCategory.customId}/brands/${brand.customId}/products/${product.customId}`,
-  )
-  await cloudinary.api.delete_folder(
-    `ecom/categories/${category.customId}/subCategories/${subCategory.customId}/brands/${brand.customId}/products/${product.customId}`,
-  )
-  await productModel.findByIdAndDelete(id);
-  res.status(StatusCodes.OK).json({ response: successRes, message: "product deleted" });
-};
-
-export const getAllProducts = async (req, res) => {
-  const products = await productModel.find({})
-
-  return res.status(StatusCodes.OK).json({ response: successRes, message: "all products", data: products })
+    res.status(StatusCodes.OK).json({ response: successRes, message: "product added", data: result })
 }
 
-export const getSingleProduct = async (req, res) => {
-  const { id } = req.params;
-  const product = await productModel.findById(id)
-  if (!product) throw new NotFoundError("not found product")
+// ===== delete product ===== //
+export const deleteProduct = async (req, res) => {
+    const { id } = req.params;
+    const product = await productModel.findById(id);
 
-  return res.status(StatusCodes.OK).json({ response: successRes, message: "single product", data: product })
+    if (!product) throw new NotFoundError('product not found');
+
+    const mainCategory = await mainCategoryModel.findById(product.mainCategory);
+    const category = await categoryModel.findById(product.category);
+    const subCategory = await subCategoryModel.findById(product.subCategory);
+
+    //=========== Delete from cloudinary ==============
+    await cloudinary.api.delete_resources_by_prefix(`ecom/main-categories/${mainCategory.customId}/categories/${category.customId}/sub-categories/${subCategory.customId}/products/${product.customId}`,)
+    await cloudinary.api.delete_folder(`ecom/main-categories/${mainCategory.customId}/categories/${category.customId}/sub-categories/${subCategory.customId}/products/${product.customId}`,)
+
+    await productModel.findByIdAndDelete(id)
+    res.status(StatusCodes.OK).json({ res: successRes, message: "product deleted" })
+}
+
+// ===== get all product ===== //
+export const getAllProducts = async (req, res) => {
+    const products = await productModel.find({});
+
+    res.status(StatusCodes.OK).json({ response: successRes, message: "all products", data: products })
+}
+
+// ===== get  product ===== //
+export const getProduct = async (req, res) => {
+    const { id } = req.params
+    const product = await productModel.findById(id);
+
+    res.status(StatusCodes.OK).json({ response: successRes, message: "single-product", data: product })
 }

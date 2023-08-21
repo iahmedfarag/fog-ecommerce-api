@@ -1,12 +1,9 @@
 import { nanoid } from "nanoid";
 import { BadRequestError, NotFoundError } from "../../errors/index.js";
-import cloudinary from './../../utils/cloudinaryConfig.js';
 import slugify from "slugify";
 import { StatusCodes } from "http-status-codes";
 import { successRes } from './../../variables.js';
-import { brandModel, productModel, subCategoryModel, categoryModel } from './../../db/models/index.js';
-import categories from "../../data/categories.json" assert { type: "json" };
-import path from "path"
+import { productModel, subCategoryModel, categoryModel } from './../../db/models/index.js';
 
 // ===== add category ===== // 
 export const addCategory = async (req, res) => {
@@ -23,22 +20,20 @@ export const addCategory = async (req, res) => {
     res.status(StatusCodes.OK).json({ response: successRes, message: "category created", data: categoryCreate })
 }
 
-
 // ===== add many category ===== // 
-export const addMany = async (req, res) => {
-    let newArr = [];
-    let finalArr = []
-    categories.map(item => {
-        item.name.toLowerCase()
-        let slug = slugify(item.name);
-        let customId = slug + "-" + nanoid(5)
-        newArr.push({ ...item, slug, customId })
-    })
+// export const addMany = async (req, res) => {
+//     let newArr = [];
+//     let finalArr = []
+//     categories.map(item => {
+//         item.name.toLowerCase()
+//         let slug = slugify(item.name);
+//         let customId = slug + "-" + nanoid(5)
+//         newArr.push({ ...item, slug, customId })
+//     })
 
-    const result = await categoryModel.create(newArr)
-    res.status(StatusCodes.OK).json({ response: successRes, message: "added many categories", data: result })
-}
-
+//     const result = await categoryModel.create(newArr)
+//     res.status(StatusCodes.OK).json({ response: successRes, message: "added many categories", data: result })
+// }
 
 // ===== delete category ===== // 
 export const deleteCategory = async (req, res) => {
@@ -49,7 +44,6 @@ export const deleteCategory = async (req, res) => {
     await categoryModel.findByIdAndDelete(id)
     res.status(StatusCodes.OK).json({ response: successRes, messsage: 'category deleted' })
 }
-
 
 // ===== delete all categories ===== // 
 export const deleteAll = async (req, res) => {
@@ -84,7 +78,6 @@ export const getCategory = async (req, res) => {
 
     res.status(StatusCodes.OK).json({ response: successRes, message: "single category", data: category })
 }
-
 
 // ===== update category ===== // 
 export const updateCategory = async (req, res) => {
