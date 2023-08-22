@@ -2,29 +2,26 @@
 import express from 'express';
 import { multerCloudFunction } from './../../utils/multerCloudFun.js';
 import { allowedExtensions } from './../../utils/allowedExtentions.js';
-import aw from './../../middleware/asyncWrapper.js';
-import * as bc from "./product.controller.js"
+import asyncWrapper from './../../middleware/asyncWrapper.js';
+import * as controller from "./product.controller.js"
 
 
 const productRouter = express.Router();
 
 // ===== add product ===== // 
-productRouter.post("/add", multerCloudFunction(allowedExtensions.image).array('images', 4), aw(bc.addProduct))
-
-// ===== update product ===== // 
-// productRouter.put("/:id/update", multerCloudFunction(allowedExtensions.image).array('images', 4),
-//     validationCoreFunction(validators.updateProductSchema), aw(bc.updateProduct))
+productRouter.post("/add", multerCloudFunction(allowedExtensions.image).array('images', 4), asyncWrapper(controller.addProduct))
 
 // ===== delete product ===== // 
-productRouter.delete("/:id/delete", aw(bc.deleteProduct))
+productRouter.delete("/:id/delete", asyncWrapper(controller.deleteProduct))
 
 // ===== get all products ===== // 
-productRouter.get("/", aw(bc.getAllProducts))
+productRouter.get("/", asyncWrapper(controller.getAllProducts))
 
 // ===== get single product ===== // 
-productRouter.get("/:id", aw(bc.getProduct))
+productRouter.get("/:id/single", asyncWrapper(controller.getProduct))
 
-// ===== add many ===== //
-// productRouter.post("/addMany", aw(bc.addManyProducts))
+// ====== get featured products ====== //
+productRouter.get("/best", asyncWrapper(controller.getFeaturedProducts))
+
 
 export default productRouter

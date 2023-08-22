@@ -7,34 +7,40 @@ import { successRes } from "../../variables.js";
 import { productModel, subCategoryModel, categoryModel, mainCategoryModel } from './../../db/models/index.js';
 
 
-// -------- add sub category -------- // 
+// ===== add sub category ===== // 
 export const addSubCategory = async (req, res, next) => {
-    const { name, categoryId, featured } = req.body;
+    const { name, featured, category, mainCategory } = req.body;
     const image = req.file
 
-    const subCategory = await subCategoryModel.findOne({ name: name.toLowerCase() });
-    if (subCategory) throw new BadRequestError("choose another name!")
+    // const subCategory = await subCategoryModel.findOne({ name: name.toLowerCase() });
+    // if (subCategory) throw new BadRequestError("choose another name!")
 
-    const category = await categoryModel.findById(categoryId);
-    if (!category) throw new NotFoundError("cateogry not found!")
+    const categoryExist = await categoryModel.findById(category);
+    const mainCategoryExist = await mainCategoryModel.findById(mainCategory);
 
-    const slug = slugify(name)
+    if (!categoryExist) throw new NotFoundError("cateogry not found!")
+    if (!mainCategoryExist) throw new NotFoundError("main-cateogry not found!")
+
+    const categoryChildFromMain = await categoryModel.findOne({ mainCategory })
+    if (!categoryChildFromMain) throw new BadRequestError("category not child from main-category")
+
+    const slug = slugify(name.toLowerCase())
     const customId = slug + "_" + nanoid(5)
     const { public_id, secure_url } = await cloudinary.uploader.upload(image.path, {
-        folder: `ecom/categories/${category.customId}/subCategories/${customId}`
+        folder: `ecom/main-categories/${mainCategoryExist.customId}/categories/${categoryExist.customId}/subCategories/${customId}`
     })
 
-    const subCategoryObj = { name, category: categoryId, image: { public_id, secure_url }, slug, customId, featured }
-    const sub = await subCategoryModel.create(subCategoryObj)
+    const subCategoryObj = { name, slug, featured, customId, image: { public_id, secure_url }, category, mainCategory }
+    const subCategoryCreate = await subCategoryModel.create(subCategoryObj)
 
-    if (!sub) {
+    if (!subCategoryCreate) {
         await cloudinary.uploader.destroy(public_id)
         throw new BadRequestError("try again please")
     }
-    res.status(StatusCodes.CREATED).json({ response: successRes, message: "subCategory created", sub })
+    res.status(StatusCodes.CREATED).json({ response: successRes, message: "subCategory created", data: subCategoryCreate })
 }
 
-// -------- update sub category -------- // 
+// ===== update sub category ===== // 
 export const updateSubCategory = async (req, res) => {
     const { id } = req.params;
     const { name } = req.body;
@@ -59,7 +65,7 @@ export const updateSubCategory = async (req, res) => {
     res.status(StatusCodes.OK).json({ response: successRes, message: "sub category updated", subCategory })
 }
 
-// -------- delete sub category -------- // 
+// ===== delete sub category ===== // 
 export const deleteSubCategory = async (req, res) => {
     const { id } = req.params;
     const subCategory = await subCategoryModel.findById(id)
@@ -74,14 +80,14 @@ export const deleteSubCategory = async (req, res) => {
     res.status(StatusCodes.OK).json({ response: successRes, message: "sub category deleted" })
 }
 
-// -------- get all sub categories -------- // 
+// ===== get all sub categories ===== // 
 export const getAllSubCategories = async (req, res) => {
     const subCategories = await subCategoryModel.find({})
 
     res.status(StatusCodes.OK).json({ response: successRes, message: "get all sub categoris", data: subCategories })
 }
 
-// -------- get sub category -------- // 
+// ===== get sub category ===== // 
 export const getSingleSubCategory = async (req, res) => {
     const { id } = req.params;
     const subCategory = await subCategoryModel.findById(id)
@@ -90,7 +96,7 @@ export const getSingleSubCategory = async (req, res) => {
     res.status(StatusCodes.OK).json({ response: successRes, message: "single category", data: subCategory })
 }
 
-// -------- add many sub categories -------- // 
+// ===== add many sub categories ===== // 
 // export const addMany = async (req, res, next) => {
 //     let newArr = [];
 //     let finalArr = []
@@ -122,7 +128,7 @@ export const getSingleSubCategory = async (req, res) => {
 //     res.status(StatusCodes.OK).json({ response: successRes, message: "added many sub-categories", data: result })
 // }
 
-// -------- delete all sub categories -------- // 
+// ===== delete all sub categories ===== // 
 export const deleteAll = async (req, res, next) => {
     const mainCategories = await mainCategoryModel.find({});
     if (!mainCategories) throw BadRequestError("no categories found")
@@ -135,3 +141,15 @@ export const deleteAll = async (req, res, next) => {
     res.status(StatusCodes.OK).json({ response: successRes, messsage: 'sub-categories deleted' })
 }
 
+// ===== get category products ===== //
+export const getSubCategoryProducts = async (req, res) => {
+    const { id } = req.params;
+
+    const subCategory = await subCategoryModel.findById(id).populate([
+        { path: "category", select: "slug" },
+        { path: "mainCategory", select: "slug" },
+        { path: "products", select: "slug" },
+    ])
+
+    res.status(200).json({ res: "dddd", data: subCategory })
+}

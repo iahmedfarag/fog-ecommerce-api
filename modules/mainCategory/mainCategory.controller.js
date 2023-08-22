@@ -17,7 +17,7 @@ export const addMainCategory = async (req, res) => {
     if (mainCategory) throw new BadRequestError("main-category already exist")
     if (!icon) return new BadRequestError("upload photo for category please")
 
-    const slug = slugify(name)
+    const slug = slugify(name.toLowerCase())
     const customId = slug + "-" + nanoid(4)
     const { public_id, secure_url } = await cloudinary.uploader.upload(icon.path, { folder: `ecom/main-categories/${customId}` })
 

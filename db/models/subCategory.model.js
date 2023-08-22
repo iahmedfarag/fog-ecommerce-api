@@ -46,7 +46,23 @@ const subCategorySchema = new mongoose.Schema({
         ref: "category",
         required: true,
     },
-}, { timestamps: true })
+    productsCount: {
+        type: Number,
+        default: 0
+    }
+}, {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+    timestamps: true
+})
+
+
+subCategorySchema.virtual('products', {
+    ref: 'product',
+    foreignField: 'subCategory',
+    localField: "_id"
+})
+
 
 const subCategoryModel = mongoose.model("subCategory", subCategorySchema);
 

@@ -7,31 +7,48 @@ const productSchema = new mongoose.Schema(
             type: String,
             required: true,
             lowercase: true,
-            min: [4, "name too short"],
+            minLength: [4, "name too short"],
         },
         description: {
             type: String,
             lowercase: true,
             required: true,
-            min: [4, "description too short"],
+            minLength: [4, "description too short"],
         },
         brand: {
             type: String,
             required: true,
             lowercase: true,
-            min: [2, "brand too short"],
+            minLength: [2, "brand too short"],
         },
-        serial: {
+        colors: [
+            {
+                type: String,
+                required: true,
+            }
+        ],
+        model: {
             type: String,
             required: true,
+            lowercase: true,
+            minLength: [2, "model too short"],
         },
-        customId: {
+        releaseYear: {
+            type: Date,
+            required: true
+        },
+        // ======= will be created ======== 
+        serial: {
             type: String,
             required: true,
         },
         slug: {
             type: String,
             lowercase: true,
+            required: true,
+        },
+        customId: {
+            type: String,
             required: true,
         },
         // ======= price =======
@@ -43,6 +60,7 @@ const productSchema = new mongoose.Schema(
             type: Number,
             default: 0
         },
+        // will be created
         priceAfterDiscount: {
             type: Number,
         },
@@ -57,6 +75,7 @@ const productSchema = new mongoose.Schema(
                 required: true,
             },
         },
+
         images: [{
             secure_url: {
                 type: String,
@@ -74,15 +93,11 @@ const productSchema = new mongoose.Schema(
         },
         soldItems: {
             type: Number,
-            required: true
-        },
-        availableItems: {
-            type: Number,
-            required: true
         },
         // ======= reviews =======
         averageRating: {
             type: Number,
+            default: 5
         },
         // ======= related =======
         mainCategory: {
@@ -101,11 +116,19 @@ const productSchema = new mongoose.Schema(
             required: true,
         },
         // ======= extra =======
-        featured: {
+        bestOffer: {
             type: Boolean,
             default: false
         },
         freeShipping: {
+            type: Boolean,
+            default: false
+        },
+        trendy: {
+            type: Boolean,
+            default: false
+        },
+        new: {
             type: Boolean,
             default: false
         }

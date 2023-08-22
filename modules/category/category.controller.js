@@ -3,19 +3,22 @@ import { BadRequestError, NotFoundError } from "../../errors/index.js";
 import slugify from "slugify";
 import { StatusCodes } from "http-status-codes";
 import { successRes } from './../../variables.js';
-import { productModel, subCategoryModel, categoryModel } from './../../db/models/index.js';
+import { productModel, subCategoryModel, categoryModel, mainCategoryModel } from './../../db/models/index.js';
 
 // ===== add category ===== // 
 export const addCategory = async (req, res) => {
-    const { name } = req.body;
+    const { name, mainCategory } = req.body;
+
+    const mainCategoryExist = await mainCategoryModel.findById(mainCategory)
+    if (!mainCategory) throw new NotFoundError("main-category not found")
 
     const category = await categoryModel.findOne({ name });
     if (category) throw new BadRequestError("category already exist")
 
-    const slug = slugify(name)
+    const slug = slugify(name.toLowerCase())
     const customId = slug + "_" + nanoid(5)
 
-    const categoryCreate = await categoryModel.create({ name, slug, customId })
+    const categoryCreate = await categoryModel.create({ name, slug, customId, mainCategory })
 
     res.status(StatusCodes.OK).json({ response: successRes, message: "category created", data: categoryCreate })
 }
