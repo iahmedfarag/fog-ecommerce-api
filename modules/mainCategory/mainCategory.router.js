@@ -14,8 +14,6 @@ mainCategoryRouter.post("/add", multerCloudFunction(allowedExtensions.image).sin
 // ===== delete main-category ===== //
 mainCategoryRouter.delete("/delete/:id", asyncWrapper(controller.deleteMainCategory))
 
-// ===== add many main-cateogries ===== //
-// mainCategoryRouter.post("/addMany", asyncWrapper(controller.addManyMainCategories))
 
 // ===== get main-category ===== //
 mainCategoryRouter.get("/:id", asyncWrapper(controller.getMainCategory))

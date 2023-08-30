@@ -18,10 +18,17 @@ productRouter.delete("/:id/delete", asyncWrapper(controller.deleteProduct))
 productRouter.get("/", asyncWrapper(controller.getAllProducts))
 
 // ===== get single product ===== // 
-productRouter.get("/:id/single", asyncWrapper(controller.getProduct))
+productRouter.get("/:id/single", asyncWrapper(controller.getSingleProduct))
 
 // ====== get featured products ====== //
 productRouter.get("/best", asyncWrapper(controller.getFeaturedProducts))
+
+// ====== get new products ====== //
+productRouter.get("/new", asyncWrapper(controller.getNewProducts))
+
+// ====== get products of subcategory ====== //
+productRouter.get("/:subCategoryId/subcategory", asyncWrapper(controller.getProductsOfSubCategory))
+
 
 
 export default productRouter

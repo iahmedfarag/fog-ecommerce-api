@@ -40,6 +40,7 @@ export const addSubCategory = async (req, res, next) => {
     res.status(StatusCodes.CREATED).json({ response: successRes, message: "subCategory created", data: subCategoryCreate })
 }
 
+
 // ===== update sub category ===== // 
 export const updateSubCategory = async (req, res) => {
     const { id } = req.params;
@@ -65,6 +66,7 @@ export const updateSubCategory = async (req, res) => {
     res.status(StatusCodes.OK).json({ response: successRes, message: "sub category updated", subCategory })
 }
 
+
 // ===== delete sub category ===== // 
 export const deleteSubCategory = async (req, res) => {
     const { id } = req.params;
@@ -80,53 +82,36 @@ export const deleteSubCategory = async (req, res) => {
     res.status(StatusCodes.OK).json({ response: successRes, message: "sub category deleted" })
 }
 
+
 // ===== get all sub categories ===== // 
 export const getAllSubCategories = async (req, res) => {
-    const subCategories = await subCategoryModel.find({})
+    const subCategories = await subCategoryModel.find({}, '-customId').populate([
+        {
+            path: 'mainCategory'
+        }, {
+            path: 'category'
+        }
+    ])
 
     res.status(StatusCodes.OK).json({ response: successRes, message: "get all sub categoris", data: subCategories })
 }
 
+
 // ===== get sub category ===== // 
 export const getSingleSubCategory = async (req, res) => {
     const { id } = req.params;
-    const subCategory = await subCategoryModel.findById(id)
+    const subCategory = await subCategoryModel.findById(id, '-customId').populate([
+        {
+            path: 'mainCategory'
+        }, {
+            path: 'category'
+        }
+    ])
     if (!subCategory) throw new NotFoundError("not found subCategory")
 
     res.status(StatusCodes.OK).json({ response: successRes, message: "single category", data: subCategory })
 }
 
-// ===== add many sub categories ===== // 
-// export const addMany = async (req, res, next) => {
-//     let newArr = [];
-//     let finalArr = []
-
-//     subcategories.map((item, index) => {
-//         let featured = false
-//         item.name.toLowerCase()
-//         let slug = slugify(item.name);
-//         let customId = slug + "-" + nanoid(5)
-//         if (index === 1 || index === 2) {
-//             featured = true
-//         }
-//         newArr.push({ ...item, image: path.resolve() + item.image, slug, customId, featured })
-//     })
-
-//     for (let i = 0; i < newArr.length; i++) {
-//         const mainCategory = await mainCategoryModel.findById(newArr[i].mainCategory)
-//         const category = await categoryModel.findById(newArr[i].category)
-//         if (!mainCategory) throw new NotFoundError("main-category not found")
-
-//         const { public_id, secure_url } = await cloudinary.uploader.upload(newArr[i].image,
-//             { folder: `ecom/main-categories/${mainCategory.customId}/categories/${category.customId}/sub-categories/${newArr[i].customId}` })
-
-//         finalArr.push({ ...newArr[i], image: { public_id, secure_url } })
-//     }
-
-//     const result = await subCategoryModel.create(finalArr)
-
-//     res.status(StatusCodes.OK).json({ response: successRes, message: "added many sub-categories", data: result })
-// }
 
 // ===== delete all sub categories ===== // 
 export const deleteAll = async (req, res, next) => {
@@ -141,14 +126,14 @@ export const deleteAll = async (req, res, next) => {
     res.status(StatusCodes.OK).json({ response: successRes, messsage: 'sub-categories deleted' })
 }
 
+
 // ===== get category products ===== //
 export const getSubCategoryProducts = async (req, res) => {
     const { id } = req.params;
-
-    const subCategory = await subCategoryModel.findById(id).populate([
-        { path: "category", select: "slug" },
-        { path: "mainCategory", select: "slug" },
-        { path: "products", select: "slug" },
+    const subCategory = await subCategoryModel.find({}).populate([
+        { path: "category" },
+        { path: "mainCategory" },
+        { path: "products" },
     ])
 
     res.status(200).json({ res: "dddd", data: subCategory })

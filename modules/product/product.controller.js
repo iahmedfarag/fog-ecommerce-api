@@ -105,7 +105,7 @@ export const deleteProduct = async (req, res) => {
 
 // ===== get all product ===== //
 export const getAllProducts = async (req, res) => {
-    const products = await productModel.find({}).populate([
+    const products = await productModel.find({}, '-customId').populate([
         {
             path: "mainCategory",
             select: "name slug"
@@ -119,11 +119,77 @@ export const getAllProducts = async (req, res) => {
             select: "name slug"
         },
     ])
+
     res.status(StatusCodes.OK).json({ response: successRes, message: "all products", data: products })
 }
 
 // ===== get featured products ===== //
 export const getFeaturedProducts = async (req, res) => {
-    const products = await productModel.find({ bestOffer: true })
+    const products = await productModel.find({ bestOffer: true }, '-customId').populate([
+        {
+            path: "mainCategory",
+            select: "name slug"
+        },
+        {
+            path: "category",
+            select: "name slug"
+        },
+        {
+            path: "subCategory",
+            select: "name slug"
+        },
+    ])
     res.status(StatusCodes.OK).json({ response: successRes, message: "featured products", data: products })
+}
+
+// ===== get new products ===== //
+export const getNewProducts = async (req, res) => {
+    const products = await productModel.find({ new: true, bestOffer: false }, '-customId').populate([
+        {
+            path: "mainCategory",
+            select: "name slug"
+        },
+        {
+            path: "category",
+            select: "name slug"
+        },
+        {
+            path: "subCategory",
+            select: "name slug"
+        },
+    ])
+
+    res.status(StatusCodes.OK).json({ response: successRes, message: "new products", data: products })
+}
+
+// ===== get single product ===== //
+export const getSingleProduct = async (req, res) => {
+    const { id } = req.params
+    const product = await productModel.findById(id, '-customId').populate([
+        { path: "mainCategory", select: "name slug" },
+        { path: "category", select: "name slug" },
+        { path: "subCategory", select: "name slug" },
+    ])
+
+    if (!product) throw new NotFoundError("product not found")
+
+    const prevProduct = await productModel.findOne({ _id: { $lt: id } }, '-customId').sort({ _id: -1 })
+    const nextProduct = await productModel.findOne({ _id: { $gt: id } }, '-customId').sort({ _id: 1 })
+
+    res.status(StatusCodes.OK).json({ response: successRes, message: "single-product", data: { current: product, prevProduct, nextProduct } })
+}
+
+
+// ===== get products of subCategory ===== //
+export const getProductsOfSubCategory = async (req, res) => {
+    const { subCategoryId } = req.params
+    const product = await productModel.find({ subCategory: subCategoryId }, '-customId').populate([
+        { path: "mainCategory", select: "name slug" },
+        { path: "category", select: "name slug" },
+        { path: "subCategory", select: "name slug" },
+    ])
+
+
+    if (!product) throw new NotFoundError("product not found")
+    res.status(StatusCodes.OK).json({ response: successRes, message: "single-product", data: product })
 }

@@ -4,14 +4,15 @@ import express from "express"
 import connectFun from './db/dbConnection.js';
 import errorHandler from "./middleware/errorHandler.js";
 import notFoundMiddleware from "./middleware/notFoundMiddleware.js";
-import { categoryRouter, subCategoryRouter } from "./modules/index.js";
-import productRouter from "./modules/product/product.router.js";
 import cors from "cors"
-import mainCategoryRouter from "./modules/mainCategory/mainCategory.router.js";
+import { categoryRouter, mainCategoryRouter, productRouter, subCategoryRouter } from "./modules/index.router.js";
+
+
 //
 const app = express()
 app.use(express.json())
 app.use(cors())
+
 // routers
 app.get('/', (req, res) => res.send('<h6>ecom website</h6>'))
 app.use("/categories", categoryRouter)
@@ -20,7 +21,7 @@ app.use("/products", productRouter)
 app.use("/mainCategories", mainCategoryRouter)
 
 // middlewares
-// app.use("*", notFoundMiddleware)
+app.use("*", notFoundMiddleware)
 app.use(errorHandler)
 
 // start func
@@ -33,4 +34,5 @@ const start = async () => {
         console.log(error, "erorrrrrrrrrrxxrrr")
     }
 }
+
 start()

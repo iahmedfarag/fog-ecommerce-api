@@ -63,6 +63,7 @@ const productSchema = new mongoose.Schema(
         // will be created
         priceAfterDiscount: {
             type: Number,
+            required: true
         },
         // ======= images =======
         mainImage: {
@@ -93,6 +94,7 @@ const productSchema = new mongoose.Schema(
         },
         soldItems: {
             type: Number,
+            required: true
         },
         // ======= reviews =======
         averageRating: {

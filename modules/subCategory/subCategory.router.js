@@ -9,9 +9,6 @@ const subCategoryRouter = express.Router();
 // ===== add sub category ===== // 
 subCategoryRouter.post("/add", multerCloudFunction(allowedExtensions.image).single("image"), asyncWrapper(controller.addSubCategory));
 
-// ===== add many sub categories ===== // 
-// subCategoryRouter.post("/addMany", asyncWrapper(controller.addMany))
-
 // ===== delete sub category ===== // 
 subCategoryRouter.delete("/:id/delete", asyncWrapper(controller.deleteSubCategory));
 

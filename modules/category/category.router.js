@@ -11,8 +11,6 @@ const categoryRouter = express.Router();
 // ===== add category ===== //
 categoryRouter.post("/add", multerCloudFunction(allowedExtensions.image).single('icon'), asyncWrapper(controller.addCategory))
 
-// ===== add many categories ===== //
-// categoryRouter.post("/addMany", asyncWrapper(controller.addMany))
 
 // ===== delete category ===== //
 categoryRouter.delete("/:id/delete", asyncWrapper(controller.deleteCategory))

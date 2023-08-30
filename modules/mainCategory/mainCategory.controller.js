@@ -32,40 +32,23 @@ export const addMainCategory = async (req, res) => {
     res.status(StatusCodes.OK).json({ response: successRes, message: "main-category created", data: mainCategoryCreate })
 }
 
-// ===== add many ===== //
-// export const addManyMainCategories = async (req, res) => {
-//     let newArr = [];
-//     let finalArr = []
-//     mainCategories.map(item => {
-//         item.name.toLowerCase()
-//         let slug = slugify(item.name);
-//         let customId = slug + "-" + nanoid(5)
-//         newArr.push({ ...item, icon: path.resolve() + item.icon, slug, customId })
-//     })
-//     for (let i = 0; i < newArr.length; i++) {
-//         const { public_id, secure_url } = await cloudinary.uploader.upload(newArr[i].icon, { folder: `ecom/main-categories/${newArr[i].customId}` })
-//         finalArr.push({ ...newArr[i], icon: { public_id, secure_url } })
-//     }
-//     const result = await mainCategoryModel.create(finalArr)
-//     res.status(StatusCodes.OK).json({ response: successRes, message: "added many main-categories", data: result })
-// }
 
 // ===== get single ===== //
+
 export const getMainCategory = async (req, res) => {
     const { id } = req.params;
-    const mainCategory = await mainCategoryModel.findById(id);
+    const mainCategory = await mainCategoryModel.findById(id, '-customId');
     res.status(StatusCodes.OK).json({ response: successRes, message: "main-category", data: mainCategory })
 }
 
 // ===== get all ===== //
 export const getAllMainCategories = async (req, res) => {
-    const mainCategories = await mainCategoryModel.find({});
+    const mainCategories = await mainCategoryModel.find({}, '-customId');
     res.status(StatusCodes.OK).json({ response: successRes, message: "all main-categories", data: mainCategories })
 }
 
 // ===== delete category ===== //
 export const deleteMainCategory = async (req, res) => {
-    console.log("hi")
     const { id } = req.params;
     const mainCategory = await mainCategoryModel.findById(id)
     if (!mainCategory) throw new NotFoundError("main-category not-found")
