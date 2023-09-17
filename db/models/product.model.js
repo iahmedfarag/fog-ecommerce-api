@@ -21,12 +21,10 @@ const productSchema = new mongoose.Schema(
             lowercase: true,
             minLength: [2, "brand too short"],
         },
-        colors: [
-            {
-                type: String,
-                required: true,
-            }
-        ],
+        colors: [{
+            type: String, //red // 2
+            required: true,
+        }],
         model: {
             type: String,
             required: true,

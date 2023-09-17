@@ -5,6 +5,7 @@ import cloudinary from "../../utils/cloudinaryConfig.js";
 import { StatusCodes } from "http-status-codes";
 import { badRes, successRes } from "../../variables.js";
 import { productModel, subCategoryModel, categoryModel, mainCategoryModel } from './../../db/models/index.js';
+import { ApiFeatures } from "../../utils/apiFeatures.js";
 
 // price = price - ( price * (discount/ 100))
 
@@ -103,24 +104,24 @@ export const deleteProduct = async (req, res) => {
     res.status(StatusCodes.OK).json({ res: successRes, message: "product deleted" })
 }
 
-// ===== get all product ===== //
+// 20 prd // 8 // 8 8 4 // 3 pages //
+// !===== get all product ===== //
 export const getAllProducts = async (req, res) => {
-    const products = await productModel.find({}, '-customId').populate([
-        {
-            path: "mainCategory",
-            select: "name slug"
-        },
-        {
-            path: "category",
-            select: "name slug"
-        },
-        {
-            path: "subCategory",
-            select: "name slug"
-        },
-    ])
+    const query = req.query
+    console.log(query)
+    const apiFeaturesInctance = new ApiFeatures(productModel.find({}), query)
+        .pagination().sort().select().filter().search()
 
-    res.status(StatusCodes.OK).json({ response: successRes, message: "all products", data: products })
+    const products = await apiFeaturesInctance.mongooseQuery
+        .populate([{ path: "mainCategory", select: "name slug" },
+        { path: "category", select: "name slug" },
+        { path: "subCategory", select: "name slug" },])
+
+    const allProducts = await productModel.find({})
+
+    let pages = Math.ceil(allProducts.length / (query.limit || 8))
+
+    res.status(StatusCodes.OK).json({ response: successRes, message: "all products", count: products.length, pages, data: products })
 }
 
 // ===== get featured products ===== //
@@ -179,7 +180,6 @@ export const getSingleProduct = async (req, res) => {
     res.status(StatusCodes.OK).json({ response: successRes, message: "single-product", data: { current: product, prevProduct, nextProduct } })
 }
 
-
 // ===== get products of subCategory ===== //
 export const getProductsOfSubCategory = async (req, res) => {
     const { subCategoryId } = req.params
@@ -192,4 +192,34 @@ export const getProductsOfSubCategory = async (req, res) => {
 
     if (!product) throw new NotFoundError("product not found")
     res.status(StatusCodes.OK).json({ response: successRes, message: "single-product", data: product })
+}
+
+// get products filter array //
+export const getProductsFilter = async (req, res) => {
+    const products = await productModel.find({}, 'priceAfterDiscount colors model brand releaseYear -_id')
+
+    let filterObject = { models: [], brands: [], colors: [], releaseYear: [], prices: [] }
+
+    products.map((prd) => {
+        filterObject.prices.push(prd.priceAfterDiscount)
+        filterObject.models.push(prd.model)
+        filterObject.brands.push(prd.brand)
+        filterObject.colors.push(...prd.colors)
+        filterObject.releaseYear.push(prd.releaseYear)
+    })
+
+    const models = Array.from(new Set(filterObject.models))
+    const brands = Array.from(new Set(filterObject.brands))
+    const colors = Array.from(new Set(filterObject.colors))
+    const releaseYear = Array.from(new Set(filterObject.releaseYear))
+
+    const finalObject = {
+        models, brands, releaseYear, colors,
+        price: {
+            min: Math.min(...filterObject.prices),
+            max: Math.max(...filterObject.prices)
+        }
+    }
+
+    res.status(200).json({ message: successRes, data: finalObject })
 }

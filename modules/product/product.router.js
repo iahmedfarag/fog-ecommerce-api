@@ -14,7 +14,7 @@ productRouter.post("/add", multerCloudFunction(allowedExtensions.image).array('i
 // ===== delete product ===== // 
 productRouter.delete("/:id/delete", asyncWrapper(controller.deleteProduct))
 
-// ===== get all products ===== // 
+//! ===== get all products ===== // 
 productRouter.get("/", asyncWrapper(controller.getAllProducts))
 
 // ===== get single product ===== // 
@@ -28,6 +28,10 @@ productRouter.get("/new", asyncWrapper(controller.getNewProducts))
 
 // ====== get products of subcategory ====== //
 productRouter.get("/:subCategoryId/subcategory", asyncWrapper(controller.getProductsOfSubCategory))
+
+// ====== get products filter====== //
+productRouter.get("/filter", asyncWrapper(controller.getProductsFilter))
+
 
 
 
