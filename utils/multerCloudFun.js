@@ -1,27 +1,26 @@
-import multer from 'multer'
-import { BadRequestError } from './../errors/badRequestErr.js';
-import { allowedExtensions } from './allowedExtentions.js';
+import multer from "multer";
+import { BadRequestError } from "./../errors/badRequestErr.js";
+import { allowedExtensions } from "./allowedExtentions.js";
 
 export const multerCloudFunction = (allowedExtensionsArr) => {
     if (!allowedExtensionsArr) {
-        allowedExtensionsArr = allowedExtensions.image
+        allowedExtensionsArr = allowedExtensions.image;
     }
     //================================== Storage =============================
-    const storage = multer.diskStorage({})
+    const storage = multer.diskStorage({});
 
     //================================== File Filter =============================
     const fileFilter = function (req, file, cb) {
-        // console.log(file)
         if (allowedExtensionsArr.includes(file.mimetype)) {
-            return cb(null, true)
+            return cb(null, true);
         }
 
-        cb(new BadRequestError('invalid extension'), false)
-    }
+        cb(new BadRequestError("invalid extension"), false);
+    };
 
     const fileUpload = multer({
         fileFilter,
         storage,
-    })
-    return fileUpload
-}
+    });
+    return fileUpload;
+};
